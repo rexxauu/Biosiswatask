@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSiswa Task | Beranda</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body data-page="home">
+    <header class="header">
+        <a class="brand" href="index.html">
+            <span class="brand-logo">BT</span>
+            <span>BioSiswa Task</span>
+        </a>
+        <nav class="navigation">
+            <a class="nav-link active" href="index.html">Beranda</a>
+            <a class="nav-link" href="siswa.html">Misi Siswa</a>
+            <a class="nav-link" href="guru.html">Panel Guru</a>
+            <a class="nav-link" href="koperasi.html">Koperasi</a>
+        </nav>
+        <div class="header-label">Prototipe PPLG</div>
+    </header>
+
+    <main class="page-container">
+        <section class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">Misi kecil, dampak nyata</p>
+                <h1>Jadikan aksi baik sebagai poin.</h1>
+                <p class="hero-description">Selesaikan misi sekolah, kirim bukti kegiatan, lalu kumpulkan poin setelah guru memverifikasi tugas.</p>
+                <div class="button-row">
+                    <a class="button button-light" href="siswa.html">Lihat misi</a>
+                    <a class="button button-outline-light" href="koperasi.html">Buka koperasi</a>
+                </div>
+            </div>
+            <div class="hero-summary">
+                <div class="summary-card">
+                    <span class="summary-label">Poin demo</span>
+                    <strong id="home-points">0</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-label">Bukti terkirim</span>
+                    <strong id="home-submissions">0</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-label">Bukti diterima</span>
+                    <strong id="home-approved">0</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-label">Misi aktif</span>
+                    <strong id="home-missions">0</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow eyebrow-dark">Mulai dari sini</p>
+                    <h2>Misi yang tersedia</h2>
+                    <p class="section-description">Pilih kegiatan yang sesuai dengan arahan guru.</p>
+                </div>
+                <a class="button button-secondary" href="siswa.html">Lihat semua misi</a>
+            </div>
+            <div class="mission-grid" id="home-mission-list"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow eyebrow-dark">Cara kerja</p>
+                    <h2>Empat langkah sederhana</h2>
+                </div>
+            </div>
+            <div class="step-grid">
+                <article class="step-card">
+                    <span class="step-number">01</span>
+                    <h3>Pilih misi</h3>
+                    <p>Baca instruksi dan aturan tugas yang dibuat guru.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">02</span>
+                    <h3>Kirim bukti</h3>
+                    <p>Isi nama, kelas, keterangan, lalu unggah foto maksimal 500 KB.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">03</span>
+                    <h3>Tunggu verifikasi</h3>
+                    <p>Guru memeriksa foto sebelum menyetujui poin.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">04</span>
+                    <h3>Tukar poin</h3>
+                    <p>Gunakan poin demo untuk mencoba penukaran di koperasi.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="notice notice-warning">
+            <strong>Catatan keamanan:</strong> tugas sampah elektronik harus dilakukan dengan arahan guru. Jangan membongkar perangkat atau menyentuh baterai yang rusak.
+        </section>
+    </main>
+
+    <footer class="footer">BioSiswa Task · Prototipe pembelajaran PPLG · Belum untuk transaksi sungguhan</footer>
+    <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

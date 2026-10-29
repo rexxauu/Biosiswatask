@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSiswa Task | Koperasi</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body data-page="shop">
+    <header class="header">
+        <a class="brand" href="index.html"><span class="brand-logo">BT</span><span>BioSiswa Task</span></a>
+        <nav class="navigation">
+            <a class="nav-link" href="index.html">Beranda</a>
+            <a class="nav-link" href="siswa.html">Misi Siswa</a>
+            <a class="nav-link" href="guru.html">Panel Guru</a>
+            <a class="nav-link active" href="koperasi.html">Koperasi</a>
+        </nav>
+        <div class="header-label">Koperasi</div>
+    </header>
+
+    <main class="page-container">
+        <section class="page-title">
+            <p class="eyebrow eyebrow-dark">Hadiah misi</p>
+            <h1>Koperasi Sekolah</h1>
+            <p class="section-description">Tukar poin yang sudah diperoleh dari misi yang disetujui guru. Penukaran pada halaman ini hanya simulasi.</p>
+        </section>
+
+        <section class="balance-panel">
+            <div><p class="eyebrow">Saldo poin demo</p><h2 id="shop-points">0 poin</h2><p>Saldo bertambah setelah bukti disetujui guru.</p></div>
+            <a class="button button-light" href="siswa.html">Lihat misi</a>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><h2>Barang yang tersedia</h2><p class="section-description">Contoh barang yang dapat ditukar.</p></div></div>
+            <div class="product-grid" id="product-list"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><h2>Riwayat penukaran</h2><p class="section-description">Penukaran simulasi pada browser ini.</p></div></div>
+            <div class="panel" id="redemption-history"></div>
+        </section>
+
+        <section class="notice notice-warning">Sebelum digunakan secara nyata, penukaran harus divalidasi oleh server dan dikelola bersama pihak koperasi sekolah.</section>
+    </main>
+    <footer class="footer">BioSiswa Task · Koperasi prototipe</footer>
+    <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

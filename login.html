@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | BioSiswa Task</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js" defer></script>
+</head>
+<body data-page="login">
+  <header class="header">
+    <a class="brand" href="index.html"><span class="brand-logo">BT</span><span>BioSiswa Task</span></a>
+    <div class="header-label">Login</div>
+  </header>
+  <main class="page-container" style="max-width:560px">
+    <section class="page-title">
+      <p class="eyebrow eyebrow-dark">Akses akun</p>
+      <h1>Masuk ke BioSiswa Task</h1>
+      <p class="section-description">Gunakan akun guru atau siswa yang sudah dibuat di Supabase.</p>
+    </section>
+    <section class="panel">
+      <form id="login-form">
+        <div class="form-field">
+          <label for="username">Username</label>
+          <input id="username" name="username" autocomplete="username" required placeholder="admin123 atau siswa123">
+        </div>
+        <div class="form-field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password">
+        </div>
+        <button class="button button-primary" type="submit" id="login-submit">Login</button>
+        <p class="field-help" id="login-message" role="status"></p>
+      </form>
+    </section>
+    <section class="notice notice-warning">
+      <strong>Penting:</strong> username dan password di bawah ini adalah akun demo bersama. Ganti password sebelum website dipakai sungguhan. Login ini memerlukan konfigurasi Supabase terlebih dahulu.
+    </section>
+  </main>
+  <footer class="footer">BioSiswa Task · Login Supabase</footer>
+</body>
+</html>
