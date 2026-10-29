@@ -1,4 +1,4 @@
-const STORAGE_KEY = "biosiswa_task_full_prototype_v1";
+const STORAGE_KEY = "biosiswa_task_v1";
 
 const INITIAL_DATA = {
     points: 0,
@@ -37,9 +37,24 @@ const INITIAL_DATA = {
 };
 
 const PRODUCTS = [
-    { id: "product-1", name: "Pulpen", description: "Alat tulis untuk kegiatan belajar.", points: 100 },
-    { id: "product-2", name: "Buku catatan", description: "Buku catatan untuk tugas sekolah.", points: 250 },
-    { id: "product-3", name: "Pensil", description: "Pensil untuk kegiatan kelas.", points: 80 }
+    {
+        id: "product-1",
+        name: "Pulpen",
+        description: "Alat tulis untuk kegiatan belajar.",
+        points: 100
+    },
+    {
+        id: "product-2",
+        name: "Buku catatan",
+        description: "Buku catatan untuk tugas sekolah.",
+        points: 250
+    },
+    {
+        id: "product-3",
+        name: "Pensil",
+        description: "Pensil untuk kegiatan kelas.",
+        points: 80
+    }
 ];
 
 let appData = loadData();
@@ -52,7 +67,10 @@ function cloneData(data) {
 function loadData() {
     try {
         const savedData = localStorage.getItem(STORAGE_KEY);
-        return savedData ? { ...cloneData(INITIAL_DATA), ...JSON.parse(savedData) } : cloneData(INITIAL_DATA);
+
+        return savedData
+            ? { ...cloneData(INITIAL_DATA), ...JSON.parse(savedData) }
+            : cloneData(INITIAL_DATA);
     } catch (error) {
         return cloneData(INITIAL_DATA);
     }
@@ -63,7 +81,7 @@ function saveData() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
         renderPage();
     } catch (error) {
-        showToast("Penyimpanan browser penuh. Hapus beberapa bukti demo atau gunakan foto yang lebih kecil.");
+        showToast("Penyimpanan browser penuh. Hapus beberapa bukti atau gunakan foto yang lebih kecil.");
     }
 }
 
@@ -79,12 +97,14 @@ function escapeHTML(value) {
 
 function showToast(message) {
     const toast = document.getElementById("toast");
+
     if (!toast) return;
 
     toast.textContent = message;
     toast.classList.remove("hidden");
 
     clearTimeout(window.toastTimeout);
+
     window.toastTimeout = setTimeout(() => {
         toast.classList.add("hidden");
     }, 3500);
@@ -105,12 +125,14 @@ function getMission(missionId) {
 function getStatusText(status) {
     if (status === "approved") return "Diterima";
     if (status === "rejected") return "Ditolak";
+
     return "Menunggu";
 }
 
 function getStatusClass(status) {
     if (status === "approved") return "status status-approved";
     if (status === "rejected") return "status status-rejected";
+
     return "status";
 }
 
@@ -120,9 +142,13 @@ function missionCard(mission) {
             <span class="card-label">Misi aktif</span>
             <h3>${escapeHTML(mission.title)}</h3>
             <p>${escapeHTML(mission.description)}</p>
+
             <div class="card-footer">
                 <span class="point-value">+${mission.points} poin</span>
-                <a class="button button-primary" href="siswa.html?misi=${encodeURIComponent(mission.id)}">Kerjakan</a>
+                <a class="button button-primary"
+                   href="siswa.html?misi=${encodeURIComponent(mission.id)}">
+                    Kerjakan
+                </a>
             </div>
         </article>
     `;
@@ -130,29 +156,44 @@ function missionCard(mission) {
 
 function renderHome() {
     const points = document.getElementById("home-points");
+
     if (!points) return;
 
     points.textContent = appData.points;
-    document.getElementById("home-submissions").textContent = appData.submissions.length;
-    document.getElementById("home-approved").textContent = appData.submissions.filter(item => item.status === "approved").length;
-    document.getElementById("home-missions").textContent = appData.missions.filter(item => item.active).length;
 
-    const activeMissions = appData.missions.filter(item => item.active).slice(0, 3);
-    document.getElementById("home-mission-list").innerHTML = activeMissions.length
-        ? activeMissions.map(missionCard).join("")
-        : '<p class="empty-state">Belum ada misi aktif. Guru dapat menambahkan misi melalui panel guru.</p>';
+    document.getElementById("home-submissions").textContent =
+        appData.submissions.length;
+
+    document.getElementById("home-approved").textContent =
+        appData.submissions.filter(item => item.status === "approved").length;
+
+    document.getElementById("home-missions").textContent =
+        appData.missions.filter(item => item.active).length;
+
+    const activeMissions = appData.missions
+        .filter(item => item.active)
+        .slice(0, 3);
+
+    document.getElementById("home-mission-list").innerHTML =
+        activeMissions.length
+            ? activeMissions.map(missionCard).join("")
+            : '<p class="empty-state">Belum ada misi aktif. Guru dapat menambahkan misi melalui panel guru.</p>';
 }
 
 function renderStudentMissions() {
     const missionList = document.getElementById("student-mission-list");
+
     if (!missionList) return;
 
     const activeMissions = appData.missions.filter(item => item.active);
+
     missionList.innerHTML = activeMissions.length
         ? activeMissions.map(missionCard).join("")
         : '<p class="empty-state">Belum ada misi aktif.</p>';
 
-    const requestedMission = new URLSearchParams(window.location.search).get("misi");
+    const requestedMission =
+        new URLSearchParams(window.location.search).get("misi");
+
     if (requestedMission && getMission(requestedMission)) {
         selectMission(requestedMission);
     }
@@ -160,22 +201,28 @@ function renderStudentMissions() {
 
 function selectMission(missionId) {
     const mission = getMission(missionId);
+
     if (!mission || !mission.active) {
         showToast("Misi tidak tersedia.");
         return;
     }
 
     document.getElementById("selected-mission-id").value = mission.id;
+
     document.getElementById("selected-mission-label").textContent =
         `Misi dipilih: ${mission.title} · Hadiah ${mission.points} poin.`;
-    document.getElementById("submission-form-section").scrollIntoView({ behavior: "smooth" });
+
+    document.getElementById("submission-form-section")
+        .scrollIntoView({ behavior: "smooth" });
 }
 
 function fileToDataURL(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
+
         reader.onload = () => resolve(reader.result);
         reader.onerror = () => reject(new Error("Foto gagal dibaca."));
+
         reader.readAsDataURL(file);
     });
 }
@@ -186,50 +233,73 @@ async function compressImage(file) {
     }
 
     const maxSize = 500 * 1024;
+
     if (file.size <= maxSize) {
-        return { data: await fileToDataURL(file), size: file.size };
+        return {
+            data: await fileToDataURL(file),
+            size: file.size
+        };
     }
 
     if (!window.createImageBitmap) {
-        throw new Error("Browser ini belum mendukung kompresi otomatis. Pilih foto di bawah 500 KB.");
+        throw new Error(
+            "Browser ini belum mendukung kompresi otomatis. Pilih foto di bawah 500 KB."
+        );
     }
 
     const image = await createImageBitmap(file);
+
     let width = image.width;
     let height = image.height;
+
     const maxDimension = 1500;
 
     if (Math.max(width, height) > maxDimension) {
         const scale = maxDimension / Math.max(width, height);
+
         width = Math.round(width * scale);
         height = Math.round(height * scale);
     }
 
     const canvas = document.createElement("canvas");
+
     canvas.width = width;
     canvas.height = height;
 
     const context = canvas.getContext("2d");
+
     context.drawImage(image, 0, 0, width, height);
 
     let quality = 0.82;
     let blob = null;
 
     for (let attempt = 0; attempt < 10; attempt++) {
-        blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", quality));
+        blob = await new Promise(resolve => {
+            canvas.toBlob(resolve, "image/jpeg", quality);
+        });
+
         if (blob && blob.size <= maxSize) break;
+
         quality -= 0.07;
     }
 
+    image.close?.();
+
     if (!blob || blob.size > maxSize) {
-        throw new Error("Foto belum bisa diperkecil sampai 500 KB. Coba foto dengan ukuran awal lebih kecil.");
+        throw new Error(
+            "Foto belum bisa diperkecil sampai 500 KB. Coba foto dengan ukuran awal lebih kecil."
+        );
     }
 
-    return { data: await fileToDataURL(blob), size: blob.size };
+    return {
+        data: await fileToDataURL(blob),
+        size: blob.size
+    };
 }
 
 function setupSubmissionForm() {
     const form = document.getElementById("submission-form");
+
     if (!form) return;
 
     const photoInput = document.getElementById("proof-photo");
@@ -237,6 +307,7 @@ function setupSubmissionForm() {
 
     photoInput.addEventListener("change", async () => {
         compressedPhoto = "";
+
         const file = photoInput.files[0];
 
         if (!file) {
@@ -248,26 +319,36 @@ function setupSubmissionForm() {
 
         try {
             const result = await compressImage(file);
+
             compressedPhoto = result.data;
-            photoStatus.textContent = `Foto siap · ${(result.size / 1024).toFixed(0)} KB`;
+
+            photoStatus.textContent =
+                `Foto siap · ${(result.size / 1024).toFixed(0)} KB`;
         } catch (error) {
             photoInput.value = "";
             photoStatus.textContent = error.message;
+
             showToast(error.message);
         }
     });
 
     form.addEventListener("reset", () => {
         compressedPhoto = "";
+
         photoStatus.textContent = "";
+
         document.getElementById("selected-mission-id").value = "";
-        document.getElementById("selected-mission-label").textContent = "Pilih tombol Kerjakan pada salah satu misi.";
+
+        document.getElementById("selected-mission-label").textContent =
+            "Pilih tombol Kerjakan pada salah satu misi.";
     });
 
     form.addEventListener("submit", event => {
         event.preventDefault();
 
-        const missionId = document.getElementById("selected-mission-id").value;
+        const missionId =
+            document.getElementById("selected-mission-id").value;
+
         const mission = getMission(missionId);
 
         if (!mission || !mission.active) {
@@ -295,20 +376,27 @@ function setupSubmissionForm() {
         };
 
         appData.submissions.unshift(submission);
+
         compressedPhoto = "";
+
         saveData();
         form.reset();
-        showToast("Bukti demo berhasil dikirim untuk diperiksa.");
+
+        showToast("Bukti berhasil dikirim untuk diperiksa.");
+
         renderStudentActivity();
     });
 }
 
 function renderStudentActivity() {
     const list = document.getElementById("student-activity-list");
+
     if (!list) return;
 
     if (!appData.submissions.length) {
-        list.innerHTML = '<p class="empty-state">Belum ada bukti yang dikirim dari browser ini.</p>';
+        list.innerHTML =
+            '<p class="empty-state">Belum ada bukti yang dikirim dari browser ini.</p>';
+
         return;
     }
 
@@ -316,27 +404,48 @@ function renderStudentActivity() {
         <article class="activity-item">
             <div>
                 <h3>${escapeHTML(submission.missionTitle)}</h3>
-                <p>${escapeHTML(submission.studentName)} · ${escapeHTML(submission.studentClass)} · ${formatDate(submission.createdAt)}</p>
+                <p>
+                    ${escapeHTML(submission.studentName)}
+                    · ${escapeHTML(submission.studentClass)}
+                    · ${formatDate(submission.createdAt)}
+                </p>
                 <p>${escapeHTML(submission.notes)}</p>
-                ${submission.reason ? `<p>Catatan guru: ${escapeHTML(submission.reason)}</p>` : ""}
+                ${submission.reason
+                    ? `<p>Catatan guru: ${escapeHTML(submission.reason)}</p>`
+                    : ""}
             </div>
-            <span class="${getStatusClass(submission.status)}">${getStatusText(submission.status)}</span>
+
+            <span class="${getStatusClass(submission.status)}">
+                ${getStatusText(submission.status)}
+            </span>
         </article>
     `).join("");
 }
 
 function setupMissionForm() {
     const form = document.getElementById("mission-form");
+
     if (!form) return;
 
     form.addEventListener("submit", event => {
         event.preventDefault();
 
-        const title = document.getElementById("mission-title").value.trim();
-        const description = document.getElementById("mission-description").value.trim();
-        const points = Number(document.getElementById("mission-points").value);
+        const title =
+            document.getElementById("mission-title").value.trim();
 
-        if (!title || !description || !Number.isInteger(points) || points < 1 || points > 1000) {
+        const description =
+            document.getElementById("mission-description").value.trim();
+
+        const points =
+            Number(document.getElementById("mission-points").value);
+
+        if (
+            !title ||
+            !description ||
+            !Number.isInteger(points) ||
+            points < 1 ||
+            points > 1000
+        ) {
             showToast("Periksa kembali judul, deskripsi, dan poin misi.");
             return;
         }
@@ -350,20 +459,28 @@ function setupMissionForm() {
         });
 
         form.reset();
+
         document.getElementById("mission-points").value = 30;
+
         saveData();
-        showToast("Misi ditambahkan ke data demo.");
+
+        showToast("Misi berhasil ditambahkan.");
     });
 }
 
 function renderPendingSubmissions() {
     const list = document.getElementById("pending-submissions");
+
     if (!list) return;
 
-    const pending = appData.submissions.filter(submission => submission.status === "pending");
+    const pending = appData.submissions.filter(
+        submission => submission.status === "pending"
+    );
 
     if (!pending.length) {
-        list.innerHTML = '<p class="empty-state">Tidak ada bukti yang menunggu pemeriksaan.</p>';
+        list.innerHTML =
+            '<p class="empty-state">Tidak ada bukti yang menunggu pemeriksaan.</p>';
+
         return;
     }
 
@@ -371,33 +488,70 @@ function renderPendingSubmissions() {
         <article class="review-item">
             <div class="review-content">
                 <h3>${escapeHTML(submission.missionTitle)}</h3>
-                <p>${escapeHTML(submission.studentName)} · ${escapeHTML(submission.studentClass)} · ${formatDate(submission.createdAt)}</p>
+
+                <p>
+                    ${escapeHTML(submission.studentName)}
+                    · ${escapeHTML(submission.studentClass)}
+                    · ${formatDate(submission.createdAt)}
+                </p>
+
                 <p>${escapeHTML(submission.notes)}</p>
+
                 <p>Hadiah jika diterima: ${submission.points} poin</p>
-                <img class="proof-image" src="${submission.photo}" alt="Foto bukti tugas siswa">
+
+                <img
+                    class="proof-image"
+                    src="${submission.photo}"
+                    alt="Foto bukti tugas siswa"
+                >
             </div>
+
             <div class="review-actions">
-                <button class="button button-primary" type="button" data-approve="${submission.id}">Terima</button>
-                <button class="button button-danger" type="button" data-reject="${submission.id}">Tolak</button>
+                <button
+                    class="button button-primary"
+                    type="button"
+                    data-approve="${submission.id}"
+                >
+                    Terima
+                </button>
+
+                <button
+                    class="button button-danger"
+                    type="button"
+                    data-reject="${submission.id}"
+                >
+                    Tolak
+                </button>
             </div>
         </article>
     `).join("");
 
     list.querySelectorAll("[data-approve]").forEach(button => {
-        button.addEventListener("click", () => reviewSubmission(button.dataset.approve, "approved"));
+        button.addEventListener("click", () => {
+            reviewSubmission(button.dataset.approve, "approved");
+        });
     });
 
     list.querySelectorAll("[data-reject]").forEach(button => {
         button.addEventListener("click", () => {
             const reason = window.prompt("Tuliskan alasan penolakan:");
+
             if (reason === null) return;
-            reviewSubmission(button.dataset.reject, "rejected", reason.trim() || "Bukti belum sesuai.");
+
+            reviewSubmission(
+                button.dataset.reject,
+                "rejected",
+                reason.trim() || "Bukti belum sesuai."
+            );
         });
     });
 }
 
 function reviewSubmission(submissionId, status, reason = "") {
-    const submission = appData.submissions.find(item => item.id === submissionId && item.status === "pending");
+    const submission = appData.submissions.find(
+        item => item.id === submissionId && item.status === "pending"
+    );
+
     if (!submission) return;
 
     submission.status = status;
@@ -408,20 +562,35 @@ function reviewSubmission(submissionId, status, reason = "") {
     }
 
     saveData();
-    showToast(status === "approved" ? "Bukti diterima. Poin demo ditambahkan." : "Bukti ditolak.");
+
+    showToast(
+        status === "approved"
+            ? "Bukti diterima. Poin berhasil ditambahkan."
+            : "Bukti ditolak."
+    );
 }
 
 function renderManageMissions() {
     const list = document.getElementById("manage-missions");
+
     if (!list) return;
 
     list.innerHTML = appData.missions.map(mission => `
         <article class="manage-item">
             <div>
                 <h3>${escapeHTML(mission.title)}</h3>
-                <p>${mission.points} poin · ${mission.active ? "Aktif" : "Nonaktif"}</p>
+
+                <p>
+                    ${mission.points} poin
+                    · ${mission.active ? "Aktif" : "Nonaktif"}
+                </p>
             </div>
-            <button class="button button-secondary" type="button" data-toggle-mission="${mission.id}">
+
+            <button
+                class="button button-secondary"
+                type="button"
+                data-toggle-mission="${mission.id}"
+            >
                 ${mission.active ? "Nonaktifkan" : "Aktifkan"}
             </button>
         </article>
@@ -430,49 +599,79 @@ function renderManageMissions() {
     list.querySelectorAll("[data-toggle-mission]").forEach(button => {
         button.addEventListener("click", () => {
             const mission = getMission(button.dataset.toggleMission);
+
             if (!mission) return;
+
             mission.active = !mission.active;
+
             saveData();
-            showToast(mission.active ? "Misi diaktifkan." : "Misi dinonaktifkan.");
+
+            showToast(
+                mission.active
+                    ? "Misi diaktifkan."
+                    : "Misi dinonaktifkan."
+            );
         });
     });
 }
 
 function setupResetButton() {
     const button = document.getElementById("reset-demo");
+
     if (!button) return;
 
     button.addEventListener("click", () => {
-        const confirmed = window.confirm("Reset semua data demo pada browser ini?");
+        const confirmed = window.confirm(
+            "Reset semua data pada browser ini?"
+        );
+
         if (!confirmed) return;
 
         appData = cloneData(INITIAL_DATA);
+
         localStorage.removeItem(STORAGE_KEY);
+
         saveData();
-        showToast("Data demo berhasil direset.");
+
+        showToast("Data berhasil direset.");
     });
 }
 
 function renderShop() {
     const productList = document.getElementById("product-list");
+
     if (!productList) return;
 
-    document.getElementById("shop-points").textContent = `${appData.points} poin`;
+    document.getElementById("shop-points").textContent =
+        `${appData.points} poin`;
 
     productList.innerHTML = PRODUCTS.map(product => `
         <article class="product-card">
             <span class="card-label">Barang koperasi</span>
+
             <h3>${escapeHTML(product.name)}</h3>
+
             <p>${escapeHTML(product.description)}</p>
+
             <div class="card-footer">
                 <span class="point-value">${product.points} poin</span>
-                <button class="button button-primary" type="button" data-redeem="${product.id}" ${appData.points < product.points ? "disabled" : ""}>Tukar poin</button>
+
+                <button
+                    class="button button-primary"
+                    type="button"
+                    data-redeem="${product.id}"
+                    ${appData.points < product.points ? "disabled" : ""}
+                >
+                    Tukar poin
+                </button>
             </div>
         </article>
     `).join("");
 
     productList.querySelectorAll("[data-redeem]").forEach(button => {
-        button.addEventListener("click", () => redeemProduct(button.dataset.redeem));
+        button.addEventListener("click", () => {
+            redeemProduct(button.dataset.redeem);
+        });
     });
 
     renderRedemptionHistory();
@@ -480,12 +679,17 @@ function renderShop() {
 
 function redeemProduct(productId) {
     const product = PRODUCTS.find(item => item.id === productId);
+
     if (!product || appData.points < product.points) return;
 
-    const confirmed = window.confirm(`Tukar ${product.points} poin untuk ${product.name}?`);
+    const confirmed = window.confirm(
+        `Tukar ${product.points} poin untuk ${product.name}?`
+    );
+
     if (!confirmed) return;
 
     appData.points -= product.points;
+
     appData.redemptions.unshift({
         id: `redemption-${Date.now()}`,
         productName: product.name,
@@ -494,15 +698,19 @@ function redeemProduct(productId) {
     });
 
     saveData();
-    showToast("Penukaran demo berhasil.");
+
+    showToast("Penukaran berhasil.");
 }
 
 function renderRedemptionHistory() {
     const list = document.getElementById("redemption-history");
+
     if (!list) return;
 
     if (!appData.redemptions.length) {
-        list.innerHTML = '<p class="empty-state">Belum ada penukaran poin.</p>';
+        list.innerHTML =
+            '<p class="empty-state">Belum ada penukaran poin.</p>';
+
         return;
     }
 
@@ -512,6 +720,7 @@ function renderRedemptionHistory() {
                 <strong>${escapeHTML(item.productName)}</strong>
                 <p>${formatDate(item.createdAt)}</p>
             </div>
+
             <span class="point-value">-${item.points} poin</span>
         </article>
     `).join("");
