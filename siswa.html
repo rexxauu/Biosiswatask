@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSiswa Task | Misi Siswa</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body data-page="student">
+    <header class="header">
+        <a class="brand" href="index.html"><span class="brand-logo">BT</span><span>BioSiswa Task</span></a>
+        <nav class="navigation">
+            <a class="nav-link" href="index.html">Beranda</a>
+            <a class="nav-link active" href="siswa.html">Misi Siswa</a>
+            <a class="nav-link" href="guru.html">Panel Guru</a>
+            <a class="nav-link" href="koperasi.html">Koperasi</a>
+        </nav>
+        <div class="header-label">Area Siswa</div>
+    </header>
+
+    <main class="page-container">
+        <section class="page-title">
+            <p class="eyebrow eyebrow-dark">Area siswa</p>
+            <h1>Misi dan pengumpulan bukti</h1>
+            <p class="section-description">Pilih misi yang tersedia, kemudian kirim bukti untuk diperiksa guru.</p>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div><h2>Daftar misi</h2><p class="section-description">Misi baru hanya dapat ditambahkan melalui panel guru pada versi demo.</p></div>
+            </div>
+            <div class="mission-grid" id="student-mission-list"></div>
+        </section>
+
+        <section class="section" id="submission-form-section">
+            <div class="section-heading">
+                <div><p class="eyebrow eyebrow-dark">Formulir</p><h2>Kirim bukti kegiatan</h2><p class="section-description" id="selected-mission-label">Pilih tombol Kerjakan pada salah satu misi.</p></div>
+            </div>
+            <div class="panel">
+                <form id="submission-form">
+                    <input type="hidden" id="selected-mission-id">
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="student-name">Nama siswa</label>
+                            <input type="text" id="student-name" maxlength="80" required placeholder="Masukkan nama lengkap">
+                        </div>
+                        <div class="form-field">
+                            <label for="student-class">Kelas</label>
+                            <select id="student-class" required>
+                                <option value="">Pilih kelas</option>
+                                <option>10 A</option>
+                                <option>10 B</option>
+                                <option>10 C</option>
+                                <option>10 D</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="proof-photo">Foto bukti</label>
+                        <input type="file" id="proof-photo" accept="image/jpeg,image/png" required>
+                        <p class="field-help">Format JPG atau PNG. Ukuran maksimal setelah kompresi adalah 500 KB per foto.</p>
+                        <p class="field-help" id="photo-status"></p>
+                    </div>
+                    <div class="form-field">
+                        <label for="proof-notes">Keterangan kegiatan</label>
+                        <textarea id="proof-notes" maxlength="500" required placeholder="Jelaskan kegiatan yang kamu lakukan."></textarea>
+                    </div>
+                    <div class="notice notice-warning">Jangan mengunggah foto yang memuat informasi pribadi yang tidak diperlukan. Pada starter ini foto masih disimpan di browser. Ikuti panduan untuk memindahkan upload foto ke Supabase Storage sebelum digunakan sungguhan.</div>
+                    <div class="button-row">
+                        <button class="button button-primary" type="submit">Kirim untuk diperiksa</button>
+                        <button class="button button-secondary" type="reset" id="reset-submission-form">Kosongkan formulir</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><p class="eyebrow eyebrow-dark">Riwayat</p><h2>Aktivitas saya</h2></div></div>
+            <div class="panel" id="student-activity-list"></div>
+        </section>
+    </main>
+    <footer class="footer">BioSiswa Task · Prototipe pembelajaran PPLG</footer>
+    <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>
