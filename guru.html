@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSiswa Task | Panel Guru</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body data-page="teacher">
+    <header class="header">
+        <a class="brand" href="index.html"><span class="brand-logo">BT</span><span>BioSiswa Task</span></a>
+        <nav class="navigation">
+            <a class="nav-link" href="index.html">Beranda</a>
+            <a class="nav-link" href="siswa.html">Misi Siswa</a>
+            <a class="nav-link active" href="guru.html">Panel Guru</a>
+            <a class="nav-link" href="koperasi.html">Koperasi</a>
+        </nav>
+        <div class="header-label">Panel Guru</div>
+    </header>
+
+    <main class="page-container">
+        <section class="page-title">
+            <p class="eyebrow eyebrow-dark">Pengelolaan</p>
+            <h1>Panel Guru</h1>
+            <p class="section-description">Buat misi, periksa bukti siswa, dan tentukan apakah bukti diterima atau ditolak.</p>
+        </section>
+
+        <section class="notice notice-danger">
+            <strong>Catatan integrasi:</strong> halaman ini sudah memiliki pemeriksaan sesi dan role login Supabase. Namun, fitur misi, bukti, dan poin di versi ini masih menggunakan data demo browser; jangan gunakan untuk data sungguhan sampai semua operasi dipindahkan ke database dan Storage Supabase.
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><p class="eyebrow eyebrow-dark">Misi</p><h2>Tambah misi baru</h2></div></div>
+            <div class="panel">
+                <form id="mission-form">
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="mission-title">Judul misi</label>
+                            <input type="text" id="mission-title" maxlength="80" required placeholder="Contoh: Memilah sampah">
+                        </div>
+                        <div class="form-field">
+                            <label for="mission-points">Poin hadiah</label>
+                            <input type="number" id="mission-points" min="1" max="1000" value="30" required>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="mission-description">Deskripsi dan aturan</label>
+                        <textarea id="mission-description" maxlength="400" required placeholder="Tuliskan langkah dan aturan kegiatan."></textarea>
+                    </div>
+                    <button class="button button-primary" type="submit">Tambah misi</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><p class="eyebrow eyebrow-dark">Verifikasi</p><h2>Bukti menunggu pemeriksaan</h2></div></div>
+            <div class="panel" id="pending-submissions"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><p class="eyebrow eyebrow-dark">Pengaturan</p><h2>Kelola misi</h2></div></div>
+            <div class="panel" id="manage-missions"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><div><p class="eyebrow eyebrow-dark">Data demo</p><h2>Reset prototipe</h2></div></div>
+            <div class="panel">
+                <p class="section-description">Menghapus misi tambahan, aktivitas, foto demo, dan poin yang tersimpan pada browser ini.</p>
+                <button class="button button-danger" type="button" id="reset-demo">Reset semua data demo</button>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">BioSiswa Task · Panel guru prototipe</footer>
+    <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>
